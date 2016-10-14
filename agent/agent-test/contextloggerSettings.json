@@ -1,0 +1,22 @@
+{
+	'ignoredPackages':[
+		'io.tracee',
+		'def'
+	],
+	'activatedContextlogger':[
+		{
+			'fqn':'io.**.AgentTestApp',
+			'method':'main'
+		},
+		{
+			'fqn':'io.tracee.cltest.**',
+			'method':'doStuff'
+		}
+	],
+	'activatedMetrics':[
+                {
+                        'fqn':'io.tracee.cltest.**',
+                        'method':'measured*'
+                }
+        ],
+}

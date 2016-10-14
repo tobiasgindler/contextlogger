@@ -22,6 +22,8 @@
 		<module>integration-test</module>
 		<module>testhelper</module>
 
+		<!-- java agent -->
+		<module>agent</module>
 	</modules>
 
 	<parent>
@@ -43,8 +45,8 @@
 			<organizationUrl>http://holisticon.de/</organizationUrl>
 		</developer>
 		<developer>
-			<name>Tobias Gindler</name>
-			<email>tobias.gindler@holisticon.de</email>
+			<name>Tobias Stamann</name>
+			<email>tobias.stamann@holisticon.de</email>
 			<organization>Holisticon AG</organization>
 			<organizationUrl>http://holisticon.de/</organizationUrl>
 		</developer>
@@ -289,6 +291,13 @@
 					<artifactId>maven-processor-plugin</artifactId>
 					<version>2.2.4</version>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
+
+
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -416,6 +425,18 @@
 			<dependency>
 				<groupId>io.tracee.contextlogger.contextprovider</groupId>
 				<artifactId>contextprovider-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.tracee.contextlogger.agent</groupId>
+				<artifactId>agent-api</artifactId>
+				<version>0.11.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.tracee.contextlogger.contextprovider</groupId>
+				<artifactId>contextprovider-agent</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 

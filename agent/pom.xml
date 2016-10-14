@@ -2,8 +2,8 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>io.tracee.contextlogger.contextprovider</groupId>
-	<artifactId>contextprovider-parent</artifactId>
+	<groupId>io.tracee.contextlogger.agent</groupId>
+	<artifactId>agent-parent</artifactId>
 	<packaging>pom</packaging>
 
 	<parent>
@@ -12,25 +12,12 @@
 		<version>0.11.1-SNAPSHOT</version>
 	</parent>
 
-	<name>connector-parent</name>
+	<name>agent-parent</name>
 	<description>Please refer to https://github.com/tracee/contextlogger.</description>
 
 	<modules>
-
-		<!-- context provider api-->
 		<module>api</module>
-
-		<!-- context provider implementations modules-->
 		<module>agent</module>
-		<module>core</module>
-		<module>aspectj</module>
-		<module>javaee</module>
-		<module>jaxws</module>
-		<module>servlet</module>
-		<module>springmvc</module>
-
-		<!-- module for constraint checks of annotations -->
-		<module>annotationprocessor</module>
-
+		<module>agent-test</module>
 	</modules>
 </project>
