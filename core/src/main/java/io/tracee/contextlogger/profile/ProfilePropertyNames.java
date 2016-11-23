@@ -4,9 +4,8 @@ import io.tracee.contextlogger.contextprovider.api.Profile;
 
 /**
  * This is a class that holds all property names handled used by profiles.
- * <p/>
- * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
+
 public final class ProfilePropertyNames {
 
 	@SuppressWarnings("unused")

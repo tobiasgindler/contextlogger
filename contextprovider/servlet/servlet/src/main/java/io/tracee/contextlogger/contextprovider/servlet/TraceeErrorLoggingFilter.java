@@ -2,7 +2,7 @@ package io.tracee.contextlogger.contextprovider.servlet;
 
 import io.tracee.contextlogger.MessagePrefixProvider;
 import io.tracee.contextlogger.TraceeContextLogger;
-import io.tracee.contextlogger.api.internal.MessageLogLevel;
+import io.tracee.contextlogger.connector.LogLevel;
 import io.tracee.contextlogger.contextprovider.core.CoreImplicitContextProviders;
 
 import javax.servlet.Filter;
@@ -17,7 +17,6 @@ import java.io.IOException;
 
 /**
  * Servlet filter to detect uncaught exceptions and to provide some contextual error logs.
- * Created by Tobias Gindler, holisticon AG on 11.12.13.
  */
 public class TraceeErrorLoggingFilter implements Filter {
 
@@ -57,7 +56,7 @@ public class TraceeErrorLoggingFilter implements Filter {
 				.create()
 				.enforceOrder()
 				.apply()
-				.logWithPrefixedMessage(MessagePrefixProvider.provideLogMessagePrefix(MessageLogLevel.ERROR, TraceeErrorLoggingFilter.class),
+				.logWithPrefixedMessage(LogLevel.ERROR, MessagePrefixProvider.provideLogMessagePrefix(LogLevel.ERROR, TraceeErrorLoggingFilter.class),
 						CoreImplicitContextProviders.COMMON, CoreImplicitContextProviders.TRACEE, servletRequest, servletResponse, servletRequest.getSession(false), e);
 
 	}

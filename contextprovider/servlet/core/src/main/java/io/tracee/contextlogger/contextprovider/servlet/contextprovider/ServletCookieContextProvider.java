@@ -10,7 +10,6 @@ import javax.servlet.http.Cookie;
 
 /**
  * Context provider for ServletCookieContextProvider.
- * Created by Tobias Gindler, holisticon AG on 24.01.14.
  */
 @TraceeContextProvider(displayName = "servletCookies", order = Order.SERVLET)
 @ProfileConfig(basic = true, enhanced = true, full = true)

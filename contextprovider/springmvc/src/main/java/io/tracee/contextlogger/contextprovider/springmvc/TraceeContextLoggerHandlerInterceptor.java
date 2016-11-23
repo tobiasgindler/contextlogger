@@ -2,7 +2,7 @@ package io.tracee.contextlogger.contextprovider.springmvc;
 
 import io.tracee.contextlogger.MessagePrefixProvider;
 import io.tracee.contextlogger.TraceeContextLogger;
-import io.tracee.contextlogger.api.internal.MessageLogLevel;
+import io.tracee.contextlogger.connector.LogLevel;
 import io.tracee.contextlogger.contextprovider.core.CoreImplicitContextProviders;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -34,7 +34,7 @@ public class TraceeContextLoggerHandlerInterceptor implements HandlerInterceptor
 					.create()
 					.enforceOrder()
 					.apply()
-					.logWithPrefixedMessage(MessagePrefixProvider.provideLogMessagePrefix(MessageLogLevel.ERROR, TraceeContextLoggerHandlerInterceptor.class),
+					.logWithPrefixedMessage(LogLevel.ERROR, MessagePrefixProvider.provideLogMessagePrefix(LogLevel.ERROR, TraceeContextLoggerHandlerInterceptor.class),
 							CoreImplicitContextProviders.COMMON, CoreImplicitContextProviders.TRACEE, o, httpServletRequest, httpServletResponse,
 							httpServletRequest.getSession(false), e);
 

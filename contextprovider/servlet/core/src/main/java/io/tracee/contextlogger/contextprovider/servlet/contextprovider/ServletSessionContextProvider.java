@@ -1,7 +1,7 @@
 package io.tracee.contextlogger.contextprovider.servlet.contextprovider;
 
-import io.tracee.contextlogger.contextprovider.api.Order;
 import io.tracee.contextlogger.contextprovider.api.Flatten;
+import io.tracee.contextlogger.contextprovider.api.Order;
 import io.tracee.contextlogger.contextprovider.api.ProfileConfig;
 import io.tracee.contextlogger.contextprovider.api.TraceeContextProvider;
 import io.tracee.contextlogger.contextprovider.api.TraceeContextProviderMethod;
@@ -15,7 +15,6 @@ import java.util.List;
 
 /**
  * Context provider for HttpSession.
- * Created by Tobias Gindler, holisticon AG on 19.03.14.
  */
 @TraceeContextProvider(displayName = "servletSession", order = Order.SERVLET)
 @ProfileConfig(basic = true, enhanced = true, full = true)

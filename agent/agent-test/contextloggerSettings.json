@@ -1,22 +1,27 @@
 {
-	'ignoredPackages':[
-		'io.tracee',
-		'def'
-	],
-	'activatedContextlogger':[
-		{
-			'fqn':'io.**.AgentTestApp',
-			'method':'main'
-		},
-		{
-			'fqn':'io.tracee.cltest.**',
-			'method':'doStuff'
-		}
-	],
-	'activatedMetrics':[
-                {
-                        'fqn':'io.tracee.cltest.**',
-                        'method':'measured*'
-                }
-        ],
+  'ignoredPackagePrefixes': [
+	'def'
+  ],
+  'activateContextloggerConfigurations': [
+	{
+	  'fqnPattern': 'io.**.AgentTestApp',
+	  'methodPattern': 'main'
+	},
+	{
+	  'fqnPattern': 'io.tracee.cltest.**',
+	  'methodPattern': 'doStuff'
+	}
+  ],
+  'activateExceptionContextloggerConfigurations': [
+	{
+	  'fqnPattern': 'io.tracee.cltest.**',
+	  'methodPattern': 'throwsRuntimeException'
+	}
+  ],
+  'activateMetricsConfigurations': [
+	{
+	  'fqnPattern': 'io.tracee.cltest.**',
+	  'methodPattern': 'measured*'
+	}
+  ]
 }

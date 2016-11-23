@@ -1,15 +1,15 @@
 package io.tracee.contextlogger.contextprovider.aspectj.contextprovider;
 
 import io.tracee.contextlogger.contextprovider.api.Order;
+import io.tracee.contextlogger.contextprovider.api.ProfileConfig;
 import io.tracee.contextlogger.contextprovider.api.TraceeContextProvider;
 import io.tracee.contextlogger.contextprovider.api.TraceeContextProviderMethod;
-import io.tracee.contextlogger.contextprovider.api.ProfileConfig;
 import io.tracee.contextlogger.contextprovider.api.WrappedContextData;
 
 /**
  * Watchdog context data provider.
- * Created by Tobias Gindler, holisticon AG on 17.03.14.
  */
+
 @SuppressWarnings("unused")
 @TraceeContextProvider(displayName = "watchdog", order = Order.WATCHDOG)
 @ProfileConfig(basic = true, enhanced = true, full = true)

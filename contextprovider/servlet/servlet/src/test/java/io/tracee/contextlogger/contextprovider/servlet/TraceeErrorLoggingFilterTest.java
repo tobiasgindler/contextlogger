@@ -4,7 +4,7 @@ import io.tracee.contextlogger.MessagePrefixProvider;
 import io.tracee.contextlogger.TraceeContextLogger;
 import io.tracee.contextlogger.api.ConfigBuilder;
 import io.tracee.contextlogger.api.ContextLogger;
-import io.tracee.contextlogger.api.internal.MessageLogLevel;
+import io.tracee.contextlogger.connector.LogLevel;
 import io.tracee.contextlogger.contextprovider.core.CoreImplicitContextProviders;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,8 +46,8 @@ public class TraceeErrorLoggingFilterTest {
 	public void setUpMocks() {
 		// mock log message prefix creation
 		mockStatic(MessagePrefixProvider.class);
-		when(MessagePrefixProvider.provideLogMessagePrefix(Mockito.any(MessageLogLevel.class), Mockito.any(String.class))).thenReturn(LOG_MESSAGE_PREFIX);
-		when(MessagePrefixProvider.provideLogMessagePrefix(Mockito.any(MessageLogLevel.class), Mockito.any(Class.class))).thenReturn(LOG_MESSAGE_PREFIX);
+		when(MessagePrefixProvider.provideLogMessagePrefix(Mockito.any(LogLevel.class), Mockito.any(String.class))).thenReturn(LOG_MESSAGE_PREFIX);
+		when(MessagePrefixProvider.provideLogMessagePrefix(Mockito.any(LogLevel.class), Mockito.any(Class.class))).thenReturn(LOG_MESSAGE_PREFIX);
 
 		mockStatic(TraceeContextLogger.class);
 		when(TraceeContextLogger.create()).thenReturn(configBuilder);
@@ -69,7 +69,7 @@ public class TraceeErrorLoggingFilterTest {
 			doThrow(expectedException).when(filterChain).doFilter(request, response);
 			unit.doFilter(request, response, filterChain);
 		} catch (Exception e) {
-			verify(traceeContextLogger).logWithPrefixedMessage(LOG_MESSAGE_PREFIX, CoreImplicitContextProviders.COMMON, CoreImplicitContextProviders.TRACEE, request, response,
+			verify(traceeContextLogger).logWithPrefixedMessage(LogLevel.ERROR, LOG_MESSAGE_PREFIX, CoreImplicitContextProviders.COMMON, CoreImplicitContextProviders.TRACEE, request, response,
 					session, expectedException);
 			throw e;
 		}

@@ -207,13 +207,21 @@
 				</plugin>
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.2</version>
+					<version>3.6.0</version>
 					<configuration>
 						<source>1.6</source>
 						<target>1.6</target>
 
 						<!-- <compilerArgument>-proc:none</compilerArgument> -->
-
+						<!--
+						<annotationProcessorPaths>
+                            <path>
+                            	<artifactId>byte-buddy-annotation-processor</artifactId>
+                              	<groupId>net.bytebuddy</groupId>
+                                <version>1.5.3-SNAPSHOT</version>
+							</path>
+                        </annotationProcessorPaths>
+						-->
 					</configuration>
 				</plugin>
 				<plugin>

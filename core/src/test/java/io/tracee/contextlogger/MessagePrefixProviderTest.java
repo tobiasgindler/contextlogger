@@ -1,41 +1,40 @@
 package io.tracee.contextlogger;
 
+import io.tracee.contextlogger.connector.LogLevel;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-
-import io.tracee.contextlogger.api.internal.MessageLogLevel;
 
 /**
  * Test class for {@link io.tracee.contextlogger.MessagePrefixProvider}.
  */
 public class MessagePrefixProviderTest {
 
-    @Test
-    public void provide_prefix_with_info_log_level() {
-        MessageLogLevel givenLogLevel = MessageLogLevel.INFO;
+	@Test
+	public void provide_prefix_with_info_log_level() {
+		LogLevel givenLogLevel = LogLevel.INFO;
 
-        String prefix = MessagePrefixProvider.provideLogMessagePrefix(givenLogLevel, MessagePrefixProviderTest.class);
-        MatcherAssert.assertThat(prefix, Matchers.is("TRACEE_CL_" + givenLogLevel.getLevel() + "[MessagePrefixProviderTest]  : "));
+		String prefix = MessagePrefixProvider.provideLogMessagePrefix(givenLogLevel, MessagePrefixProviderTest.class);
+		MatcherAssert.assertThat(prefix, Matchers.is("TRACEE_CL_" + givenLogLevel.name() + "[MessagePrefixProviderTest]  : "));
 
-    }
+	}
 
-    @Test
-    public void provide_prefix_with_default_log_level() {
-        MessageLogLevel givenLogLevel = null;
+	@Test
+	public void provide_prefix_with_default_log_level() {
+		LogLevel givenLogLevel = null;
 
-        String prefix = MessagePrefixProvider.provideLogMessagePrefix(givenLogLevel, MessagePrefixProviderTest.class);
-        MatcherAssert.assertThat(prefix, Matchers.is("TRACEE_CL_" + MessagePrefixProvider.DEFAULT_LEVEL.getLevel() + "[MessagePrefixProviderTest]  : "));
+		String prefix = MessagePrefixProvider.provideLogMessagePrefix(givenLogLevel, MessagePrefixProviderTest.class);
+		MatcherAssert.assertThat(prefix, Matchers.is("TRACEE_CL_" + MessagePrefixProvider.DEFAULT_LEVEL.name() + "[MessagePrefixProviderTest]  : "));
 
-    }
+	}
 
-    @Test
-    public void provide_prefix_with_default_log_level_and_no_type() {
-        MessageLogLevel givenLogLevel = null;
+	@Test
+	public void provide_prefix_with_default_log_level_and_no_type() {
+		LogLevel givenLogLevel = null;
 
-        String prefix = MessagePrefixProvider.provideLogMessagePrefix(givenLogLevel, (Class)null);
-        MatcherAssert.assertThat(prefix, Matchers.is("TRACEE_CL_" + MessagePrefixProvider.DEFAULT_LEVEL.getLevel() + "[]  : "));
+		String prefix = MessagePrefixProvider.provideLogMessagePrefix(givenLogLevel, (Class) null);
+		MatcherAssert.assertThat(prefix, Matchers.is("TRACEE_CL_" + MessagePrefixProvider.DEFAULT_LEVEL.name() + "[]  : "));
 
-    }
+	}
 
 }

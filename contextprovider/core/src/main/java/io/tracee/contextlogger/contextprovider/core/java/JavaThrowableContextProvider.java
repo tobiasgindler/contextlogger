@@ -11,7 +11,6 @@ import java.io.StringWriter;
 
 /**
  * Provides context information about thrown exceptions.
- * Created by Tobias Gindler, holisticon AG on 17.03.14.
  */
 @SuppressWarnings("unused")
 @TraceeContextProvider(displayName = "throwable", order = Order.EXCEPTION)

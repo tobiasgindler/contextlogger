@@ -7,6 +7,7 @@ import io.tracee.contextlogger.contextprovider.aspectj.contextprovider.WatchdogC
 /**
  * Provides all aspectj related service providers
  */
+
 public class AspectJContextProviderServiceProvider implements TraceeContextProviderServiceProvider {
 
 	public static final Class[] IMPLICIT_CONTEXT_PROVIDER = {};

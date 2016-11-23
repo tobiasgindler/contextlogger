@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * Context provider for ProceedingJoinPoint.
- * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
+
 @TraceeContextProvider(displayName = "proceedingJoinPoint")
 @ProfileConfig(basic = true, enhanced = true, full = true)
 public class AspectjProceedingJoinPointContextProvider implements WrappedContextData<ProceedingJoinPoint> {

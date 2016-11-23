@@ -4,7 +4,7 @@ import io.tracee.contextlogger.MessagePrefixProvider;
 import io.tracee.contextlogger.TraceeContextLogger;
 import io.tracee.contextlogger.api.ConfigBuilder;
 import io.tracee.contextlogger.api.ContextLogger;
-import io.tracee.contextlogger.api.internal.MessageLogLevel;
+import io.tracee.contextlogger.connector.LogLevel;
 import io.tracee.contextlogger.contextprovider.core.CoreImplicitContextProviders;
 import io.tracee.contextlogger.contextprovider.jaxws.contextprovider.JaxWsWrapper;
 import org.hamcrest.Matchers;
@@ -67,8 +67,8 @@ public class TraceeServerErrorLoggingHandlerTest {
 
 		// mock log message prefix creation
 		mockStatic(MessagePrefixProvider.class);
-		when(MessagePrefixProvider.provideLogMessagePrefix(Mockito.any(MessageLogLevel.class), Mockito.any(String.class))).thenReturn(LOG_MESSAGE_PREFIX);
-		when(MessagePrefixProvider.provideLogMessagePrefix(Mockito.any(MessageLogLevel.class), Mockito.any(Class.class))).thenReturn(LOG_MESSAGE_PREFIX);
+		when(MessagePrefixProvider.provideLogMessagePrefix(Mockito.any(LogLevel.class), Mockito.any(String.class))).thenReturn(LOG_MESSAGE_PREFIX);
+		when(MessagePrefixProvider.provideLogMessagePrefix(Mockito.any(LogLevel.class), Mockito.any(Class.class))).thenReturn(LOG_MESSAGE_PREFIX);
 	}
 
 	@Test
@@ -153,7 +153,7 @@ public class TraceeServerErrorLoggingHandlerTest {
 		final SOAPMessageContext messageContext = mock(SOAPMessageContext.class);
 		when(messageContext.getMessage()).thenReturn(buildSpiedTestMessage("vA"));
 		unit.handleFault(messageContext);
-		verify(contextLogger).logWithPrefixedMessage(eq(LOG_MESSAGE_PREFIX), eq(CoreImplicitContextProviders.COMMON), eq(CoreImplicitContextProviders.TRACEE),
+		verify(contextLogger).logWithPrefixedMessage(eq(LogLevel.ERROR), eq(LOG_MESSAGE_PREFIX), eq(CoreImplicitContextProviders.COMMON), eq(CoreImplicitContextProviders.TRACEE),
 				Mockito.any(JaxWsWrapper.class));
 	}
 

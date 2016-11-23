@@ -9,6 +9,7 @@ import org.springframework.core.MethodParameter;
 /**
  * Context provider dor {@link MethodParameter}.
  */
+
 @TraceeContextProvider(displayName = "methodParameter")
 @ProfileConfig(basic = true, enhanced = true, full = true)
 public class MethodParameterContextProvider implements WrappedContextData<MethodParameter> {

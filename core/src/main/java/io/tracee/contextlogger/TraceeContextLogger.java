@@ -2,99 +2,111 @@ package io.tracee.contextlogger;
 
 import io.tracee.contextlogger.api.ConfigBuilder;
 import io.tracee.contextlogger.api.ContextLogger;
-import io.tracee.contextlogger.outputgenerator.api.TraceeContextStringRepresentationBuilder;
 import io.tracee.contextlogger.connector.ConnectorOutputProvider;
 import io.tracee.contextlogger.connector.LogConnectorOutputProvider;
+import io.tracee.contextlogger.connector.LogLevel;
 import io.tracee.contextlogger.impl.ConfigBuilderImpl;
 import io.tracee.contextlogger.impl.ContextLoggerConfiguration;
+import io.tracee.contextlogger.outputgenerator.api.TraceeContextStringRepresentationBuilder;
 
 /**
  * The main context logger class.
- * This class is used to generate context information
- * <p/>
- * Created by Tobias Gindler, holisticon AG on 14.03.14.
+ * This class is used to generate context information.
  */
 
 public final class TraceeContextLogger extends AbstractToStringBuilder<ContextLogger> implements LogConnectorOutputProvider {
 
-    private ConnectorFactory connectorsWrapper;
+	private ConnectorFactory connectorsWrapper;
 
-    private String prefix;
+	private LogLevel logLevel;
 
-    private TraceeContextLogger(ContextLoggerConfiguration contextLoggerConfiguration) {
-        super(contextLoggerConfiguration);
-        initConnectors();
-    }
+	private String prefix;
 
-    private TraceeContextLogger(TraceeContextLogger instanceToClone) {
-        super(instanceToClone);
+	private TraceeContextLogger(ContextLoggerConfiguration contextLoggerConfiguration) {
+		super(contextLoggerConfiguration);
+		initConnectors();
+	}
 
-        this.connectorsWrapper = instanceToClone.connectorsWrapper;
+	private TraceeContextLogger(TraceeContextLogger instanceToClone) {
+		super(instanceToClone);
 
-        this.prefix = instanceToClone.prefix;
+		this.connectorsWrapper = instanceToClone.connectorsWrapper;
 
-    }
+		this.prefix = instanceToClone.prefix;
 
-    /**
-     * Initializes all available connectors.
-     */
-    private void initConnectors() {
-        connectorsWrapper = new ConnectorFactory();
-    }
+	}
 
-    public static ConfigBuilder<ContextLogger> create() {
+	/**
+	 * Initializes all available connectors.
+	 */
+	private void initConnectors() {
+		connectorsWrapper = new ConnectorFactory();
+	}
 
-        TraceeContextLogger contextLoggerInstance = new TraceeContextLogger(ContextLoggerConfiguration.getOrCreateContextLoggerConfiguration());
-        return new ConfigBuilderImpl<ContextLogger>(contextLoggerInstance);
+	public static ConfigBuilder<ContextLogger> create() {
 
-    }
+		TraceeContextLogger contextLoggerInstance = new TraceeContextLogger(ContextLoggerConfiguration.getOrCreateContextLoggerConfiguration());
+		return new ConfigBuilderImpl<ContextLogger>(contextLoggerInstance);
 
-    public static ContextLogger createDefault() {
-        return create().apply();
-    }
+	}
 
-    @Override
-    public void log(Object... instancesToLog) {
-        this.logWithPrefixedMessage(null, instancesToLog);
-    }
+	public static ContextLogger createDefault() {
+		return create().apply();
+	}
 
-    @Override
-    public void logWithPrefixedMessage(String prefixedMessage, Object... instancesToLog) {
+	@Override
+	public void log(Object... instancesToLog) {
+		this.logWithPrefixedMessage(null, instancesToLog);
+	}
 
-        this.prefix = prefixedMessage;
-        this.setObjectsToProcess(instancesToLog);
+	@Override
+	public void logWithPrefixedMessage(String prefixedMessage, Object... instancesToLog) {
+		logWithPrefixedMessage(LogLevel.INFO, prefixedMessage, instancesToLog);
+	}
 
-        this.connectorsWrapper.sendErrorReportToConnectors(this);
-    }
+	@Override
+	public void logWithPrefixedMessage(LogLevel logLevel, String prefixedMessage, Object... instancesToLog) {
 
-    @Override
-    public ConnectorOutputProvider excludeContextProviders(final Class... contextProvidersToInclude) {
+		this.logLevel = logLevel;
+		this.prefix = prefixedMessage;
+		this.setObjectsToProcess(instancesToLog);
 
-        TraceeContextLogger traceeContextLogger = new TraceeContextLogger(this);
-        TraceeContextStringRepresentationBuilder traceeContextStringRepresentationBuilder = this.getStringRepresentationBuilder()
-                .cloneStringRepresentationBuilder();
+		this.connectorsWrapper.sendErrorReportToConnectors(this);
+	}
 
-        for (Class type : contextProvidersToInclude) {
 
-            if (type != null) {
-                traceeContextStringRepresentationBuilder.getManualContextOverrides().put(type.getCanonicalName(), Boolean.FALSE);
-            }
-        }
+	@Override
+	public ConnectorOutputProvider excludeContextProviders(final Class... contextProvidersToInclude) {
 
-        traceeContextLogger.setStringRepresentationBuilder(traceeContextStringRepresentationBuilder);
+		TraceeContextLogger traceeContextLogger = new TraceeContextLogger(this);
+		TraceeContextStringRepresentationBuilder traceeContextStringRepresentationBuilder = this.getStringRepresentationBuilder()
+				.cloneStringRepresentationBuilder();
 
-        return traceeContextLogger;
-    }
+		for (Class type : contextProvidersToInclude) {
 
-    @Override
-    public String provideOutput() {
+			if (type != null) {
+				traceeContextStringRepresentationBuilder.getManualContextOverrides().put(type.getCanonicalName(), Boolean.FALSE);
+			}
+		}
 
-        return this.getStringRepresentationBuilder().createStringRepresentation(this.getObjectsToProcess());
-    }
+		traceeContextLogger.setStringRepresentationBuilder(traceeContextStringRepresentationBuilder);
 
-    @Override
-    public String getPrefix() {
-        return prefix;
-    }
+		return traceeContextLogger;
+	}
 
+	@Override
+	public String provideOutput() {
+
+		return this.getStringRepresentationBuilder().createStringRepresentation(this.getObjectsToProcess());
+	}
+
+	@Override
+	public String getPrefix() {
+		return prefix;
+	}
+
+	@Override
+	public LogLevel getLogLevel() {
+		return logLevel;
+	}
 }

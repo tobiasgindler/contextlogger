@@ -1,5 +1,6 @@
 package io.tracee.contextlogger.contextprovider.agent;
 
+import io.tracee.contextlogger.contextprovider.api.Order;
 import io.tracee.contextlogger.contextprovider.api.ProfileConfig;
 import io.tracee.contextlogger.contextprovider.api.TraceeContextProvider;
 import io.tracee.contextlogger.contextprovider.api.TraceeContextProviderMethod;
@@ -8,7 +9,7 @@ import io.tracee.contextlogger.contextprovider.api.WrappedContextData;
 import java.util.Arrays;
 import java.util.List;
 
-@TraceeContextProvider(displayName = "agent-interceptor")
+@TraceeContextProvider(displayName = "agent-interceptor", order = Order.AGENT)
 @ProfileConfig(basic = true, enhanced = true, full = true)
 public class AgentContextProvider implements WrappedContextData<AgentDataWrapper> {
 

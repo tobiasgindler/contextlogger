@@ -17,7 +17,6 @@ import java.util.Map;
 
 /**
  * Common context data provider.
- * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 @SuppressWarnings("unused")
 @TraceeContextProvider(displayName = "tracee", order = Order.TRACEE)

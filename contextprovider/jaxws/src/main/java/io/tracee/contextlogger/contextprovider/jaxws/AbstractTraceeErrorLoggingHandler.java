@@ -2,7 +2,7 @@ package io.tracee.contextlogger.contextprovider.jaxws;
 
 import io.tracee.contextlogger.MessagePrefixProvider;
 import io.tracee.contextlogger.TraceeContextLogger;
-import io.tracee.contextlogger.api.internal.MessageLogLevel;
+import io.tracee.contextlogger.connector.LogLevel;
 import io.tracee.contextlogger.contextprovider.core.CoreImplicitContextProviders;
 import io.tracee.contextlogger.contextprovider.jaxws.contextprovider.JaxWsWrapper;
 import org.slf4j.Logger;
@@ -52,7 +52,7 @@ public abstract class AbstractTraceeErrorLoggingHandler implements SOAPHandler<S
 				.create()
 				.enforceOrder()
 				.apply()
-				.logWithPrefixedMessage(MessagePrefixProvider.provideLogMessagePrefix(MessageLogLevel.ERROR, "JAX-WS"), CoreImplicitContextProviders.COMMON,
+				.logWithPrefixedMessage(LogLevel.ERROR, MessagePrefixProvider.provideLogMessagePrefix(LogLevel.ERROR, "JAX-WS"), CoreImplicitContextProviders.COMMON,
 						CoreImplicitContextProviders.TRACEE, JaxWsWrapper.wrap(THREAD_LOCAL_SOAP_MESSAGE_STR.get(), convertSoapMessageAsString(soapMessage)));
 
 		return true;

@@ -16,14 +16,16 @@ public class InstrumentationConfigLoader {
 
 	public final static String DEFAULT_SETTING_FILENAME = "contextloggerSettings.json";
 
-	public final static String SETTING_IGNORED_PACKAGES = "ignoredPackages";
-	public final static String SETTING_ACTIVATED_METRICS = "activatedMetrics";
-	public final static String SETTING_ACTIVATED_CONTEXTLOGGER = "activatedContextlogger";
+	public final static String SETTING_IGNORED_PACKAGES = "ignoredPackagePrefixes";
+	public final static String SETTING_ACTIVATE_METRICS = "activateMetricsConfigurations";
+	public final static String SETTING_ACTIVATE_CONTEXTLOGGER = "activateContextloggerConfigurations";
+	public final static String SETTING_ACTIVATE_EXCEPTION_CONTEXTLOGGER = "activateExceptionContextloggerConfigurations";
 
-	public final static String SETTING_PARAMETER_NAME_FQN = "fqn";
-	public final static String SETTING_PARAMETER_NAME_METHOD = "method";
+	public final static String SETTING_PARAMETER_NAME_FQN_PATTERN = "fqnPattern";
+	public final static String SETTING_PARAMETER_NAME_METHOD_PATTERN = "methodPattern";
 
 	public InstrumentationConfig[] contextLoggerConfig;
+	public InstrumentationConfig[] exceptionContextLoggerConfig;
 	public InstrumentationConfig[] metricsConfig;
 	public String[] deactivatedPackages;
 
@@ -42,8 +44,9 @@ public class InstrumentationConfigLoader {
 			SimpleJsonParser.Obj jsonObject = (SimpleJsonParser.Obj) SimpleJsonParser.parse(jsonStr);
 
 			deactivatedPackages = getIgnoredPackagePrefixes(jsonObject);
-			contextLoggerConfig = getInstrumentationConfig(jsonObject, SETTING_ACTIVATED_CONTEXTLOGGER);
-			metricsConfig = getInstrumentationConfig(jsonObject, SETTING_ACTIVATED_METRICS);
+			contextLoggerConfig = getInstrumentationConfig(jsonObject, SETTING_ACTIVATE_CONTEXTLOGGER);
+			exceptionContextLoggerConfig = getInstrumentationConfig(jsonObject, SETTING_ACTIVATE_EXCEPTION_CONTEXTLOGGER);
+			metricsConfig = getInstrumentationConfig(jsonObject, SETTING_ACTIVATE_METRICS);
 
 
 		} catch (Exception e) {
@@ -102,8 +105,8 @@ public class InstrumentationConfigLoader {
 
 					SimpleJsonParser.Obj element = (SimpleJsonParser.Obj) array.getValue(i);
 
-					SimpleJsonParser.Text fqn = (SimpleJsonParser.Text) element.getValueByKey(SETTING_PARAMETER_NAME_FQN);
-					SimpleJsonParser.Text method = (SimpleJsonParser.Text) element.getValueByKey(SETTING_PARAMETER_NAME_METHOD);
+					SimpleJsonParser.Text fqn = (SimpleJsonParser.Text) element.getValueByKey(SETTING_PARAMETER_NAME_FQN_PATTERN);
+					SimpleJsonParser.Text method = (SimpleJsonParser.Text) element.getValueByKey(SETTING_PARAMETER_NAME_METHOD_PATTERN);
 
 					list.add(new InstrumentationConfig(fqn != null ? fqn.getValue() : null, method != null ? method.getValue() : null));
 				}

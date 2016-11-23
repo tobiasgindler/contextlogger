@@ -15,7 +15,6 @@ import java.util.Date;
 
 /**
  * Common context data provider.
- * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 @TraceeContextProvider(displayName = "common", order = Order.COMMON)
 @ProfileConfig(basic = true, enhanced = true, full = true)

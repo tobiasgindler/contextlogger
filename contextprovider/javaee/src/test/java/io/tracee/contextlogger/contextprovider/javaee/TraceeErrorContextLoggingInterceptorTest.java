@@ -5,7 +5,7 @@ import io.tracee.contextlogger.TraceeContextLogger;
 import io.tracee.contextlogger.api.ConfigBuilder;
 import io.tracee.contextlogger.api.ContextLogger;
 import io.tracee.contextlogger.api.ErrorMessage;
-import io.tracee.contextlogger.api.internal.MessageLogLevel;
+import io.tracee.contextlogger.connector.LogLevel;
 import io.tracee.contextlogger.contextprovider.core.CoreImplicitContextProviders;
 import io.tracee.contextlogger.contextprovider.core.tracee.TraceeMessage;
 import org.junit.Before;
@@ -64,8 +64,8 @@ public class TraceeErrorContextLoggingInterceptorTest {
 
 		// mock log message prefix creation
 		mockStatic(MessagePrefixProvider.class);
-		when(MessagePrefixProvider.provideLogMessagePrefix(Mockito.any(MessageLogLevel.class), Mockito.any(String.class))).thenReturn(LOG_MESSAGE_PREFIX);
-		when(MessagePrefixProvider.provideLogMessagePrefix(Mockito.any(MessageLogLevel.class), Mockito.any(Class.class))).thenReturn(LOG_MESSAGE_PREFIX);
+		when(MessagePrefixProvider.provideLogMessagePrefix(Mockito.any(LogLevel.class), Mockito.any(String.class))).thenReturn(LOG_MESSAGE_PREFIX);
+		when(MessagePrefixProvider.provideLogMessagePrefix(Mockito.any(LogLevel.class), Mockito.any(Class.class))).thenReturn(LOG_MESSAGE_PREFIX);
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class TraceeErrorContextLoggingInterceptorTest {
 
 		unit.intercept(invocationContext);
 		verify(invocationContext).proceed();
-		verify(contextLogger, never()).logWithPrefixedMessage(anyString(), any(), any(), any(), any());
+		verify(contextLogger, never()).logWithPrefixedMessage(any(LogLevel.class), anyString(), any(), any(), any(), any());
 	}
 
 	@Test(expected = RuntimeException.class)
@@ -94,7 +94,7 @@ public class TraceeErrorContextLoggingInterceptorTest {
 			unit.intercept(invocationContext);
 		} catch (Exception e) {
 			verify(invocationContext).proceed();
-			verify(contextLogger).logWithPrefixedMessage(LOG_MESSAGE_PREFIX, CoreImplicitContextProviders.COMMON, CoreImplicitContextProviders.TRACEE, invocationContext, exception);
+			verify(contextLogger).logWithPrefixedMessage(LogLevel.ERROR, LOG_MESSAGE_PREFIX, CoreImplicitContextProviders.COMMON, CoreImplicitContextProviders.TRACEE, invocationContext, exception);
 			throw e;
 		}
 	}
@@ -112,7 +112,7 @@ public class TraceeErrorContextLoggingInterceptorTest {
 			unit.intercept(invocationContext);
 		} catch (Exception e) {
 			verify(invocationContext).proceed();
-			verify(contextLogger).logWithPrefixedMessage(LOG_MESSAGE_PREFIX, traceeMessage, CoreImplicitContextProviders.COMMON, CoreImplicitContextProviders.TRACEE,
+			verify(contextLogger).logWithPrefixedMessage(LogLevel.ERROR, LOG_MESSAGE_PREFIX, traceeMessage, CoreImplicitContextProviders.COMMON, CoreImplicitContextProviders.TRACEE,
 					invocationContext, exception);
 			throw e;
 		}

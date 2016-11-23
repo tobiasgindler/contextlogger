@@ -7,8 +7,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AgentTestApp {
 
+	private NoTracking noTracking = new NoTracking();
+
+	public void throwsRuntimeException(String x, String y) {
+		noTracking.wtf();
+		throw new NullPointerException("TATA");
+	}
+
 
 	public String measuredByConfig() {
+
+		try {
+			throwsRuntimeException("a", "b");
+		} catch (Exception e) {
+			// do nothing
+		}
+
+		noTracking.notAgain("X");
 
 		return "OK";
 	}

@@ -1,5 +1,6 @@
 package io.tracee.contextlogger;
 
+import io.tracee.contextlogger.connector.LogLevel;
 import io.tracee.contextlogger.contextprovider.api.Profile;
 import io.tracee.contextlogger.impl.ContextLoggerConfiguration;
 import io.tracee.contextlogger.outputgenerator.api.TraceeContextStringRepresentationBuilder;
@@ -34,6 +35,10 @@ public class AbstractToStringBuilderTest {
 		@Override
 		public void logWithPrefixedMessage(final String prefixedMessage, final Object... instancesToLog) {
 
+		}
+
+		@Override
+		public void logWithPrefixedMessage(final LogLevel logLevel, final String prefixedMessage, final Object... instancesToLog) {
 		}
 	}
 

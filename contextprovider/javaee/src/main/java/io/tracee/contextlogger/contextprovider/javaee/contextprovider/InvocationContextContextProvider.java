@@ -14,7 +14,6 @@ import java.util.Map;
 
 /**
  * Context provider for ProceedingJoinPoint.
- * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
 @TraceeContextProvider(displayName = "invocationContext", order = Order.EJB)
 @ProfileConfig(basic = true, enhanced = true, full = true)

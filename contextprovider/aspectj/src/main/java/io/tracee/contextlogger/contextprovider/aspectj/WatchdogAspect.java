@@ -3,7 +3,7 @@ package io.tracee.contextlogger.contextprovider.aspectj;
 import io.tracee.contextlogger.MessagePrefixProvider;
 import io.tracee.contextlogger.TraceeContextLogger;
 import io.tracee.contextlogger.api.ErrorMessage;
-import io.tracee.contextlogger.api.internal.MessageLogLevel;
+import io.tracee.contextlogger.connector.LogLevel;
 import io.tracee.contextlogger.contextprovider.aspectj.contextprovider.WatchdogDataWrapper;
 import io.tracee.contextlogger.contextprovider.aspectj.util.WatchdogUtils;
 import io.tracee.contextlogger.contextprovider.core.CoreImplicitContextProviders;
@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
  * Watchdog Assert class.
  * This aspect logs method calls of Watchdog annotated classes and methods in case of an exception is thrown during the execution of the method.
  * <p>
- * Created by Tobias Gindler, holisticon AG on 16.02.14.
  */
 
 @Aspect
@@ -106,14 +105,14 @@ public class WatchdogAspect {
 					.create()
 					.enforceOrder()
 					.apply()
-					.logWithPrefixedMessage(MessagePrefixProvider.provideLogMessagePrefix(MessageLogLevel.ERROR, Watchdog.class), CoreImplicitContextProviders.COMMON,
+					.logWithPrefixedMessage(LogLevel.ERROR, MessagePrefixProvider.provideLogMessagePrefix(LogLevel.ERROR, Watchdog.class), CoreImplicitContextProviders.COMMON,
 							CoreImplicitContextProviders.TRACEE, WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint), e);
 		} else {
 			TraceeContextLogger
 					.create()
 					.enforceOrder()
 					.apply()
-					.logWithPrefixedMessage(MessagePrefixProvider.provideLogMessagePrefix(MessageLogLevel.ERROR, Watchdog.class),
+					.logWithPrefixedMessage(LogLevel.ERROR, MessagePrefixProvider.provideLogMessagePrefix(LogLevel.ERROR, Watchdog.class),
 							TraceeMessage.wrap(errorMessage.value()), CoreImplicitContextProviders.COMMON, CoreImplicitContextProviders.TRACEE,
 							WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint), e);
 		}

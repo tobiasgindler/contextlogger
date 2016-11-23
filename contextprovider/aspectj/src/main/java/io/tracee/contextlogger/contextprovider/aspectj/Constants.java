@@ -2,7 +2,6 @@ package io.tracee.contextlogger.contextprovider.aspectj;
 
 /**
  * Constants class for watchdog.
- * Created by Tobias Gindler on 07.03.14.
  */
 public final class Constants {
 

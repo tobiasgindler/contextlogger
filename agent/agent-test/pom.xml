@@ -36,6 +36,8 @@
 								<bannedDependencies>
 									<searchTransitive>false</searchTransitive>
 									<excludes>
+
+
 										<exclude>*</exclude>
 									</excludes>
 									<includes>

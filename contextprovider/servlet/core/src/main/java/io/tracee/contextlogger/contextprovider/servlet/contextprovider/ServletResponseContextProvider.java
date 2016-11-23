@@ -14,7 +14,6 @@ import java.util.List;
 
 /**
  * Context provider for HttpServletResponse.
- * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
 @TraceeContextProvider(displayName = "servletResponse", order = Order.SERVLET)
 @ProfileConfig(basic = true, enhanced = true, full = true)

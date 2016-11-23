@@ -81,7 +81,7 @@ public class RecursiveOutputElementTreeBuilderImpl implements RecursiveOutputEle
                     .apply(contextLoggerConfiguration, passedInstanceToDeserialize);
 
             // abort execution if class is disabled
-            Boolean isClassActive = profileSettings.getPropertyValue(instanceToDeserialize.getClass().getCanonicalName());
+			Boolean isClassActive = profileSettings.getPropertyValue(instanceToDeserialize.getClass().getCanonicalName());
             if (isClassActive != null && !isClassActive) {
                 return null;
             }

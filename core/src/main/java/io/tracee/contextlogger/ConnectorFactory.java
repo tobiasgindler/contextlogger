@@ -1,5 +1,12 @@
 package io.tracee.contextlogger;
 
+import io.tracee.contextlogger.connector.Connector;
+import io.tracee.contextlogger.connector.ConnectorOutputProvider;
+import io.tracee.contextlogger.connector.LogConnector;
+import io.tracee.contextlogger.connector.WellKnownConnectorClassNames;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,197 +16,187 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.tracee.contextlogger.connector.Connector;
-import io.tracee.contextlogger.connector.ConnectorOutputProvider;
-import io.tracee.contextlogger.connector.LogConnector;
-import io.tracee.contextlogger.connector.WellKnownConnectorClassNames;
-
 /**
  * Class to pipe messages to all configured connectors.
- * Created by Tobias Gindler, holisticon AG on 26.03.14.
  */
 class ConnectorFactory {
 
-    // Connector settings
-    private static final Pattern KEY_MATCHER_PATTERN = Pattern.compile(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_KEY_PATTERN);
-    private static final String CONNECTOR_PROPERTY_GRABBER_PATTERN = TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX.replaceAll("\\.", "\\.")
-            + "%s\\.(.*)";
-    private static final Logger LOGGER = LoggerFactory.getLogger(TraceeContextLogger.class);
-    private static final Map<String, String> WELL_KNOW_CONNECTOR_MAPPINGS = new HashMap<String, String>();
+	// Connector settings
+	private static final Pattern KEY_MATCHER_PATTERN = Pattern.compile(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_KEY_PATTERN);
+	private static final String CONNECTOR_PROPERTY_GRABBER_PATTERN = TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX.replaceAll("\\.", "\\.")
+			+ "%s\\.(.*)";
+	private static final Logger LOGGER = LoggerFactory.getLogger(TraceeContextLogger.class);
+	private static final Map<String, String> WELL_KNOW_CONNECTOR_MAPPINGS = new HashMap<String, String>();
 
-    static {
-        WELL_KNOW_CONNECTOR_MAPPINGS.put("HttpConnector", WellKnownConnectorClassNames.HTTP_CONNECTOR);
-        WELL_KNOW_CONNECTOR_MAPPINGS.put(LogConnector.class.getName(), LogConnector.class.getCanonicalName());
-    }
+	static {
+		WELL_KNOW_CONNECTOR_MAPPINGS.put("HttpConnector", WellKnownConnectorClassNames.HTTP_CONNECTOR);
+		WELL_KNOW_CONNECTOR_MAPPINGS.put(LogConnector.class.getName(), LogConnector.class.getCanonicalName());
+	}
 
-    // Connector
-    private final Map<String, Connector> connectorMap = new HashMap<String, Connector>();
+	// Connector
+	private final Map<String, Connector> connectorMap = new HashMap<String, Connector>();
 
-    ConnectorFactory() {
-        initConnectors();
-    }
+	ConnectorFactory() {
+		initConnectors();
+	}
 
-    /**
-     * Initializes all available connectors.
-     */
-    private void initConnectors() {
+	/**
+	 * Initializes all available connectors.
+	 */
+	private void initConnectors() {
 
-        // first get all connector configuration Names
-        Set<String> connectorConfigurationNames = this.getConnectorConfigurationNames();
+		// first get all connector configuration Names
+		Set<String> connectorConfigurationNames = this.getConnectorConfigurationNames();
 
-        for (String connectorConfigurationName : connectorConfigurationNames) {
+		for (String connectorConfigurationName : connectorConfigurationNames) {
 
-            Connector connector = this.createConnector(connectorConfigurationName);
+			Connector connector = this.createConnector(connectorConfigurationName);
 
-            if (connector != null) {
+			if (connector != null) {
 
-                this.connectorMap.put(connectorConfigurationName, connector);
+				this.connectorMap.put(connectorConfigurationName, connector);
 
-            }
+			}
 
-        }
+		}
 
-        // Add mandatory logger
-        if (!isConnectorConfigured(LogConnector.class)) {
-            Connector logConnector = new LogConnector();
-            this.connectorMap.put("LOGGER", logConnector);
-        }
+		// Add mandatory logger
+		if (!isConnectorConfigured(LogConnector.class)) {
+			Connector logConnector = new LogConnector();
+			this.connectorMap.put("LOGGER", logConnector);
+		}
 
-    }
+	}
 
-    /**
-     * Send error report to all initialized connector instances.
-     *
-     * @param connectorOutputProvider the context data provider used for output
-     */
-    final void sendErrorReportToConnectors(ConnectorOutputProvider connectorOutputProvider) {
+	/**
+	 * Send error report to all initialized connector instances.
+	 *
+	 * @param connectorOutputProvider the context data provider used for output
+	 */
+	final void sendErrorReportToConnectors(ConnectorOutputProvider connectorOutputProvider) {
 
-        for (Connector connector : this.connectorMap.values()) {
+		for (Connector connector : this.connectorMap.values()) {
 
-            connector.sendErrorReport(connectorOutputProvider);
+			connector.sendErrorReport(connectorOutputProvider);
 
-        }
-    }
+		}
+	}
 
-    /**
-     * Extracts all names for connector configurations from System properties.
-     *
-     * @return a Set containing all connector configuration names
-     */
-    final Set<String> getConnectorConfigurationNames() {
+	/**
+	 * Extracts all names for connector configurations from System properties.
+	 *
+	 * @return a Set containing all connector configuration names
+	 */
+	final Set<String> getConnectorConfigurationNames() {
 
-        Set<String> connectorNames = new HashSet<String>();
+		Set<String> connectorNames = new HashSet<String>();
 
-        Enumeration<Object> keyEnumeration = getSystemProperties().keys();
-        while (keyEnumeration.hasMoreElements()) {
-            String key = keyEnumeration.nextElement().toString();
+		Enumeration<Object> keyEnumeration = getSystemProperties().keys();
+		while (keyEnumeration.hasMoreElements()) {
+			String key = keyEnumeration.nextElement().toString();
 
-            // check if property key has tracee connector format
-            Matcher matcher = KEY_MATCHER_PATTERN.matcher(key);
-            if (matcher.matches() && matcher.groupCount() > 0) {
+			// check if property key has tracee connector format
+			Matcher matcher = KEY_MATCHER_PATTERN.matcher(key);
+			if (matcher.matches() && matcher.groupCount() > 0) {
 
-                connectorNames.add(matcher.group(1));
+				connectorNames.add(matcher.group(1));
 
-            }
+			}
 
-        }
+		}
 
-        return connectorNames;
+		return connectorNames;
 
-    }
+	}
 
-    /**
-     * Collects all properties for a given connector configuration name and writes them to a Map.
-     *
-     * @param connectorName the name of the connector configuration
-     * @return a Map containing all properties for a connector configuration name
-     */
-    final Map<String, String> getPropertiesForConnectorConfigurationName(final String connectorName) {
+	/**
+	 * Collects all properties for a given connector configuration name and writes them to a Map.
+	 *
+	 * @param connectorName the name of the connector configuration
+	 * @return a Map containing all properties for a connector configuration name
+	 */
+	final Map<String, String> getPropertiesForConnectorConfigurationName(final String connectorName) {
 
-        final Map<String, String> propertyMap = new HashMap<String, String>();
+		final Map<String, String> propertyMap = new HashMap<String, String>();
 
-        final String patternString = String.format(CONNECTOR_PROPERTY_GRABBER_PATTERN, connectorName);
-        final Pattern propertyGrabPattern = Pattern.compile(patternString);
+		final String patternString = String.format(CONNECTOR_PROPERTY_GRABBER_PATTERN, connectorName);
+		final Pattern propertyGrabPattern = Pattern.compile(patternString);
 
-        final Set<Map.Entry<Object, Object>> entries = getSystemProperties().entrySet();
+		final Set<Map.Entry<Object, Object>> entries = getSystemProperties().entrySet();
 
-        for (Map.Entry<Object, Object> entry : entries) {
-            final String key = entry.getKey().toString();
-            final Object value = entry.getValue();
+		for (Map.Entry<Object, Object> entry : entries) {
+			final String key = entry.getKey().toString();
+			final Object value = entry.getValue();
 
-            // check if property key has tracee connector format
-            final Matcher matcher = propertyGrabPattern.matcher(key);
-            if (value != null && matcher.matches() && matcher.groupCount() > 0) {
+			// check if property key has tracee connector format
+			final Matcher matcher = propertyGrabPattern.matcher(key);
+			if (value != null && matcher.matches() && matcher.groupCount() > 0) {
 
-                final String propertyName = matcher.group(1);
+				final String propertyName = matcher.group(1);
 
-                propertyMap.put(propertyName, value.toString());
+				propertyMap.put(propertyName, value.toString());
 
-            }
+			}
 
-        }
+		}
 
-        return propertyMap;
+		return propertyMap;
 
-    }
+	}
 
-    /**
-     * Tries to create a Connector for a given connector configuration name.
-     *
-     * @param connectorConfigurationName the name of the connector configuration
-     * @return the connector if it could be created and initialized without error, otherwise null
-     */
-    final Connector createConnector(final String connectorConfigurationName) {
+	/**
+	 * Tries to create a Connector for a given connector configuration name.
+	 *
+	 * @param connectorConfigurationName the name of the connector configuration
+	 * @return the connector if it could be created and initialized without error, otherwise null
+	 */
+	final Connector createConnector(final String connectorConfigurationName) {
 
-        Map<String, String> propertyMap = this.getPropertiesForConnectorConfigurationName(connectorConfigurationName);
-        String type = propertyMap.get(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE);
+		Map<String, String> propertyMap = this.getPropertiesForConnectorConfigurationName(connectorConfigurationName);
+		String type = propertyMap.get(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE);
 
-        // get canonical class name for well known connectors
-        if (WELL_KNOW_CONNECTOR_MAPPINGS.containsKey(type)) {
-            type = WELL_KNOW_CONNECTOR_MAPPINGS.get(type);
-        }
+		// get canonical class name for well known connectors
+		if (WELL_KNOW_CONNECTOR_MAPPINGS.containsKey(type)) {
+			type = WELL_KNOW_CONNECTOR_MAPPINGS.get(type);
+		}
 
-        try {
+		try {
 
-            // try to create connector instance
-            Connector connector = (Connector)Class.forName(type).newInstance();
+			// try to create connector instance
+			Connector connector = (Connector) Class.forName(type).newInstance();
 
-            // now try to call init method
-            connector.init(propertyMap);
+			// now try to call init method
+			connector.init(propertyMap);
 
-            return connector;
+			return connector;
 
-        }
-        catch (Exception e) {
-            LOGGER.error("An error occurred while creating connector with name '" + connectorConfigurationName + "' of type '" + type + "'", e);
-        }
+		} catch (Exception e) {
+			LOGGER.error("An error occurred while creating connector with name '" + connectorConfigurationName + "' of type '" + type + "'", e);
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    /**
-     * Checks whether the LogConnector is defined or not.
-     *
-     * @param connectorClass the connector to check for
-     * @return true, if LogConnector is already defined, otherwise false.
-     */
-    private boolean isConnectorConfigured(Class connectorClass) {
-        for (Connector connector : this.connectorMap.values()) {
+	/**
+	 * Checks whether the LogConnector is defined or not.
+	 *
+	 * @param connectorClass the connector to check for
+	 * @return true, if LogConnector is already defined, otherwise false.
+	 */
+	private boolean isConnectorConfigured(Class connectorClass) {
+		for (Connector connector : this.connectorMap.values()) {
 
-            if (connectorClass.isInstance(connector)) {
-                return true;
-            }
+			if (connectorClass.isInstance(connector)) {
+				return true;
+			}
 
-        }
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    protected Properties getSystemProperties() {
-        return System.getProperties();
-    }
+	protected Properties getSystemProperties() {
+		return System.getProperties();
+	}
 
 }

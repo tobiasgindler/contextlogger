@@ -10,7 +10,6 @@ import java.util.Map;
 
 /**
  * Abstract base class for all context toJson builder implementations.
- * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
 public abstract class AbstractContextStringRepresentationBuilder implements TraceeContextStringRepresentationBuilder {
 

@@ -1,6 +1,7 @@
 package io.tracee.contextlogger.contextprovider.javaee;
 
 import io.tracee.contextlogger.TraceeContextLogger;
+import io.tracee.contextlogger.connector.LogLevel;
 import io.tracee.contextlogger.contextprovider.core.CoreImplicitContextProviders;
 
 import javax.interceptor.AroundInvoke;
@@ -11,7 +12,6 @@ import java.lang.reflect.Method;
 /**
  * Message listener to detect exceptions that happened during javaee message processing.
  * In case of an exception contextual information will be written to the log.
- * Created by Tobias Gindler, holisticon AG on 13.03.14.
  */
 public class TraceeJmsErrorMessageListener {
 
@@ -31,7 +31,7 @@ public class TraceeJmsErrorMessageListener {
 
 			if (isMdbInvocation) {
 				TraceeContextLogger.create().enforceOrder().apply()
-						.logWithPrefixedMessage(JSON_PREFIXED_MESSAGE, CoreImplicitContextProviders.COMMON, CoreImplicitContextProviders.TRACEE, ctx, e);
+						.logWithPrefixedMessage(LogLevel.ERROR, JSON_PREFIXED_MESSAGE, CoreImplicitContextProviders.COMMON, CoreImplicitContextProviders.TRACEE, ctx, e);
 			}
 
 			throw e;

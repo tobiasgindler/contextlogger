@@ -5,8 +5,9 @@ import io.tracee.contextlogger.contextprovider.springmvc.contextprovider.Handler
 import io.tracee.contextlogger.contextprovider.springmvc.contextprovider.MethodParameterContextProvider;
 
 /**
- * Provides all javaee (CDI, ...) related service providers
+ * Provides aspring mvc related service providers.
  */
+
 public class SpringMvcContextProviderServiceProvider implements TraceeContextProviderServiceProvider {
 
 	public static final Class[] IMPLICIT_CONTEXT_PROVIDER = {};

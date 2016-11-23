@@ -2,6 +2,7 @@ package io.tracee.contextlogger;
 
 import io.tracee.contextlogger.api.ConfigBuilder;
 import io.tracee.contextlogger.api.ToStringBuilder;
+import io.tracee.contextlogger.connector.LogLevel;
 import io.tracee.contextlogger.impl.ConfigBuilderImpl;
 import io.tracee.contextlogger.impl.ContextLoggerConfiguration;
 
@@ -10,28 +11,33 @@ import io.tracee.contextlogger.impl.ContextLoggerConfiguration;
  */
 public class TraceeToStringBuilder extends AbstractToStringBuilder<TraceeToStringBuilder> {
 
-    private TraceeToStringBuilder(ContextLoggerConfiguration contextLoggerConfiguration) {
-        super(contextLoggerConfiguration);
-    }
+	private TraceeToStringBuilder(ContextLoggerConfiguration contextLoggerConfiguration) {
+		super(contextLoggerConfiguration);
+	}
 
-    public static ConfigBuilder<TraceeToStringBuilder> create() {
+	public static ConfigBuilder<TraceeToStringBuilder> create() {
 
-        TraceeToStringBuilder toStringBuilder = new TraceeToStringBuilder(ContextLoggerConfiguration.getOrCreateContextLoggerConfiguration());
-        return new ConfigBuilderImpl<TraceeToStringBuilder>(toStringBuilder);
+		TraceeToStringBuilder toStringBuilder = new TraceeToStringBuilder(ContextLoggerConfiguration.getOrCreateContextLoggerConfiguration());
+		return new ConfigBuilderImpl<TraceeToStringBuilder>(toStringBuilder);
 
-    }
+	}
 
-    public static ToStringBuilder createDefault() {
-        return create().apply();
-    }
+	public static ToStringBuilder createDefault() {
+		return create().apply();
+	}
 
-    @Override
-    public void log(final Object... instancesToLog) {
-        // NOT IMPLEMENTED
-    }
+	@Override
+	public void log(final Object... instancesToLog) {
+		// NOT IMPLEMENTED
+	}
 
-    @Override
-    public void logWithPrefixedMessage(final String prefixedMessage, final Object... instancesToLog) {
-        // NOT IMPLEMENTED
-    }
+	@Override
+	public void logWithPrefixedMessage(final String prefixedMessage, final Object... instancesToLog) {
+		// NOT IMPLEMENTED
+	}
+
+	@Override
+	public void logWithPrefixedMessage(LogLevel logLevel, final String prefixedMessage, final Object... instancesToLog) {
+		// NOT IMPLEMENTED
+	}
 }

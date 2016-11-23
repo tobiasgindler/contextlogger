@@ -15,7 +15,6 @@ import java.util.List;
 
 /**
  * Context provider for HttpServletRequest.
- * Created by Tobias Gindler, holisticon AG on 17.03.14.
  */
 
 @TraceeContextProvider(displayName = "servletRequest", order = Order.SERVLET)
